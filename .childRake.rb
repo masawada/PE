@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'rake/clean'
 SRC=FileList["*.c"]
 BIN=SRC.ext("")
@@ -15,13 +16,22 @@ rule /^(#{BIN.join("|")})$/oi => "#$1.c" do |t|
   sh "#{CC} #{CFLAGS} #{t.source} #{LIBS} -o #{t.name} "
 end
 
-task :default => [BIN,:test]
+task :default => [BIN,:test,:desc]
 
+desc "テスト"
 task :test => TESTER do
   BIN.each do |bin|
     Dir.glob("#{bin}*.in").each do |input|
       puts "diff <(./#{bin} < #{input}) <(ruby #{bin}.rb < #{input})"
       system(SHELL,"-c","diff <(./#{bin} < #{input}) <(ruby #{bin}.rb < #{input})")
     end
+  end
+end
+
+desc "提出ファイル作成"
+task :desc do
+  BIN.each do |bin|
+    ENV["PE_PREFIX"] = bin
+    sh "erb desc_#{bin}.erb > desc_#{bin}.txt"
   end
 end
