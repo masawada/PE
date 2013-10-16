@@ -1,8 +1,8 @@
 # coding: utf-8
 require 'rake/clean'
-C_TEMPLATE=".template.c"
-ERB_TEMPLATE=".desc.erb"
-RAKE_FILE=".childRake.rb"
+C_TEMPLATE="template.c"
+ERB_TEMPLATE="desc_template.erb"
+RAKE_FILE="childRake.rb"
 
 DIRS=%w{a b c d}
 
