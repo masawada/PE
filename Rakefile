@@ -1,23 +1,18 @@
 require 'rake/clean'
-SRC=FileList["*.c"]
-BIN=SRC.ext("")
-TESTER=FileList["*.rb"]
+C_TEMPLATE="template.c"
+RAKE_FILE=".childRake"
+TEST_TYPE = "rb"
 
-CLEAN.include(BIN)
+DIRS=%w{a b c d}
 
-rule /^(#{BIN.join("|")})$/oi => "#$1.c" do |t|
-  sh "clang -o #{t.name} #{t.source}"
-end
+DIRS.each do |dir|
+  directory dir
 
-task :default => BIN do 
-  Rake::Task[:test].invoke
-end
-
-task :test => TESTER do
-  BIN.each do |bin|
-    Dir.glob("#{bin}*.in").each do |input|
-      puts "diff <(./#{bin} < #{input}) <(ruby #{bin}.rb < #{input})"
-      system("zsh","-c","diff <(./#{bin} < #{input}) <(ruby #{bin}.rb < #{input})")
-    end
+  file dir do
+    cp C_TEMPLATE,"#{dir}/#{dir}.c"
+    cp RAKE_FILE,"#{dir}/Rakefile"
+    sh "touch #{dir}/#{dir}.#{TEST_TYPE}"
   end
 end
+
+task :default => DIRS
