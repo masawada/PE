@@ -5,6 +5,7 @@ BIN=SRC.ext("")
 TEST_TYPE="rb" # テストに使う言語
 TESTER=SRC.ext(TEST_TYPE)
 SHELL="zsh" # bashかzshで
+SUBMIT_PREFIX="desc"
 
 CLEAN.include(BIN)
 
@@ -29,9 +30,13 @@ task :test => TESTER do
 end
 
 desc "提出ファイル作成"
-task :desc do
+task :desc => BIN do
   BIN.each do |bin|
     ENV["PE_PREFIX"] = bin
     sh "erb desc_#{bin}.erb > desc_#{bin}.txt"
   end
 end
+
+MAIL_ADDRESS="hoge@jed.uec.ac.jp"
+desc "提出"
+#task :submit => :desc
