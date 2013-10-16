@@ -1,5 +1,5 @@
 require 'rake/clean'
-C_TEMPLATE="template.c"
+C_TEMPLATE=".template.c"
 RAKE_FILE=".childRake.rb"
 
 DIRS=%w{a b c d}
