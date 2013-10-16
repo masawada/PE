@@ -1,7 +1,6 @@
 require 'rake/clean'
 C_TEMPLATE="template.c"
-RAKE_FILE=".childRake"
-TEST_TYPE = "rb"
+RAKE_FILE=".childRake.rb"
 
 DIRS=%w{a b c d}
 
@@ -11,7 +10,6 @@ DIRS.each do |dir|
   file dir do
     cp C_TEMPLATE,"#{dir}/#{dir}.c"
     cp RAKE_FILE,"#{dir}/Rakefile"
-    sh "touch #{dir}/#{dir}.#{TEST_TYPE}"
   end
 end
 
